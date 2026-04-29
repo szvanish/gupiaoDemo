@@ -1,5 +1,5 @@
 import json
-import anthropic
+from openai import OpenAI
 from datetime import datetime
 from models.stock import StockAnalysis, AIReport
 
@@ -67,16 +67,24 @@ def build_prompt(analysis: StockAnalysis) -> str:
 
 class AIReportService:
     def __init__(self, api_key: str):
-        self.client = anthropic.Anthropic(api_key=api_key)
+        self.client = OpenAI(
+            api_key=api_key,
+            base_url="https://api.deepseek.com",
+        )
 
     def generate(self, analysis: StockAnalysis) -> AIReport:
-        response = self.client.messages.create(
-            model="claude-sonnet-4-6",
+        response = self.client.chat.completions.create(
+            model="deepseek-chat",
             max_tokens=2048,
-            system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": build_prompt(analysis)}],
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": build_prompt(analysis)},
+            ],
         )
-        raw = response.content[0].text.strip()
+        raw = response.choices[0].message.content.strip()
+        # Strip markdown code fences if model wraps output
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
         data = json.loads(raw)
         return AIReport(
             code=analysis.code,

@@ -3,70 +3,104 @@ import pandas as pd
 from datetime import datetime, timedelta
 from models.stock import StockQuote, KLineBar, StockSearchResult, FundamentalData, SentimentData
 
-PERIOD_MAP = {"day": "daily", "week": "weekly", "month": "monthly"}
+def _sym(code: str) -> str:
+    """Convert bare code like '600036' to stooq/tx symbol like 'sh600036'."""
+    return ("sh" if code.startswith("6") else "sz") + code
+
+_name_cache: dict[str, str] = {}
+
+def _get_stock_name(code: str) -> str:
+    if code in _name_cache:
+        return _name_cache[code]
+    try:
+        df = ak.stock_info_a_code_name()
+        row = df[df["code"] == code]
+        if not row.empty:
+            name = str(row.iloc[0]["name"])
+            _name_cache[code] = name
+            return name
+    except Exception:
+        pass
+    return code
+
+def _fetch_daily(code: str, days: int) -> pd.DataFrame:
+    """Fetch daily OHLCV from stooq via ak.stock_zh_a_daily (avoids eastmoney)."""
+    end = datetime.now().strftime("%Y%m%d")
+    start = (datetime.now() - timedelta(days=days)).strftime("%Y%m%d")
+    return ak.stock_zh_a_daily(symbol=_sym(code), start_date=start, end_date=end, adjust="")
 
 class AShareService:
     def get_quote(self, code: str) -> StockQuote:
-        df = ak.stock_zh_a_spot_em()
-        row = df[df["代码"] == code]
-        if row.empty:
+        df = _fetch_daily(code, 15)
+        if df.empty:
             raise ValueError(f"Stock {code} not found")
-        r = row.iloc[0]
-        price = float(r["最新价"])
-        prev_close = float(r["昨收"])
+        last = df.iloc[-1]
+        prev_close = float(df.iloc[-2]["close"]) if len(df) >= 2 else float(last["close"])
+        price = float(last["close"])
+        change = round(price - prev_close, 4)
+        change_pct = round((change / prev_close * 100) if prev_close else 0, 2)
+        name = _get_stock_name(code)
         return StockQuote(
             code=code,
-            name=str(r["名称"]),
+            name=name,
             market="A",
             price=price,
-            change=round(float(r["涨跌额"]), 4),
-            change_pct=round(float(r["涨跌幅"]), 2),
-            volume=float(r["成交量"]),
-            amount=float(r["成交额"]),
-            high=float(r["最高"]),
-            low=float(r["最低"]),
-            open=float(r["今开"]),
+            change=change,
+            change_pct=change_pct,
+            volume=float(last["volume"]),
+            amount=float(last["amount"]),
+            high=float(last["high"]),
+            low=float(last["low"]),
+            open=float(last["open"]),
             prev_close=prev_close,
         )
 
     def get_kline(self, code: str, period: str = "day") -> list[KLineBar]:
-        end = datetime.now().strftime("%Y%m%d")
-        start = (datetime.now() - timedelta(days=365 * 3)).strftime("%Y%m%d")
-        df = ak.stock_zh_a_hist(
-            symbol=code,
-            period=PERIOD_MAP.get(period, "daily"),
-            start_date=start,
-            end_date=end,
-            adjust="qfq",
-        )
+        fetch_days = {"day": 180, "week": 365 * 2, "month": 365 * 5}
+        df = _fetch_daily(code, fetch_days.get(period, 180))
+        if df.empty:
+            return []
+        df["date"] = pd.to_datetime(df["date"])
+        df = df.set_index("date")
+        if period == "week":
+            df = df.resample("W-FRI").agg(
+                open=("open", "first"), high=("high", "max"),
+                low=("low", "min"), close=("close", "last"), volume=("volume", "sum")
+            ).dropna()
+        elif period == "month":
+            df = df.resample("ME").agg(
+                open=("open", "first"), high=("high", "max"),
+                low=("low", "min"), close=("close", "last"), volume=("volume", "sum")
+            ).dropna()
+        df = df.reset_index()
         return [
             KLineBar(
-                date=str(row["日期"]),
-                open=round(float(row["开盘"]), 4),
-                high=round(float(row["最高"]), 4),
-                low=round(float(row["最低"]), 4),
-                close=round(float(row["收盘"]), 4),
-                volume=float(row["成交量"]),
+                date=str(row["date"])[:10],
+                open=round(float(row["open"]), 4),
+                high=round(float(row["high"]), 4),
+                low=round(float(row["low"]), 4),
+                close=round(float(row["close"]), 4),
+                volume=float(row["volume"]),
             )
             for _, row in df.iterrows()
         ]
 
     def get_fundamental(self, code: str) -> FundamentalData:
+        pe, pb = None, None
         try:
-            spot_df = ak.stock_zh_a_spot_em()
-            spot = spot_df[spot_df["代码"] == code]
-            if not spot.empty:
-                r = spot.iloc[0]
-                pe = r.get("市盈率-动态") if hasattr(r, 'get') else None
-                if pe is None:
-                    pe = r["市盈率-动态"] if "市盈率-动态" in spot.columns else None
-                pb = r["市净率"] if "市净率" in spot.columns else None
-                pe = float(pe) if pe is not None else None
-                pb = float(pb) if pb is not None else None
-            else:
-                pe, pb = None, None
+            info = ak.stock_individual_info_em(symbol=code)
+            def _val(label):
+                row = info[info.iloc[:, 0] == label]
+                if not row.empty:
+                    try:
+                        return float(str(row.iloc[0, 1]).replace(",", "").replace("--", ""))
+                    except (ValueError, TypeError):
+                        pass
+                return None
+            pe = _val("市盈率(动)")
+            pb = _val("市净率")
         except Exception:
-            pe, pb = None, None
+            pass
         score = 50
         if pe and 0 < pe < 20:
             score += 15

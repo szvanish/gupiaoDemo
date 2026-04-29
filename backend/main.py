@@ -1,3 +1,14 @@
+import os
+# Bypass proxy: clear env vars, set NO_PROXY, and monkey-patch requests so Windows registry
+# proxy settings cannot be picked up by new Sessions created inside akshare.
+for _k in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy", "ALL_PROXY", "all_proxy"):
+    os.environ.pop(_k, None)
+os.environ["NO_PROXY"] = "*"
+os.environ["no_proxy"] = "*"
+
+import requests.utils as _ru
+_ru.get_environ_proxies = lambda *a, **kw: {}  # prevent Windows registry proxy lookup
+
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 import redis.asyncio as aioredis

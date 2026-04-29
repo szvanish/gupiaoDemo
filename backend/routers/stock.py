@@ -99,7 +99,7 @@ async def get_report(code: str, market: str, request: Request):
         return cached
     analysis_data = await get_analysis(code, market, request)
     analysis = StockAnalysis(**analysis_data)
-    svc = AIReportService(api_key=settings.claude_api_key)
+    svc = AIReportService(api_key=settings.deepseek_api_key)
     try:
         report = svc.generate(analysis)
     except Exception as e:
