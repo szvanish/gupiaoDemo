@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="api_base_url"
+        android:title="后端 API 地址"
+        android:summary="默认: http://172.17.6.46:8000（局域网）\n模拟器请改为 http://10.0.2.2:8000"
+        android:defaultValue="http://172.17.6.46:8000"
+        android:inputType="textUri"/>
+    <EditTextPreference
+        android:key="claude_api_key"
+        android:title="Claude API Key"
+        android:summary="用于生成 AI 研报"
+        android:inputType="textPassword"/>
+    <ListPreference
+        android:key="refresh_interval"
+        android:title="数据刷新频率"
+        android:entries="@array/refresh_entries"
+        android:entryValues="@array/refresh_values"
+        android:defaultValue="30"/>
+    <Preference
+        android:key="clear_cache"
+        android:title="清理缓存"
+        android:summary="清除本地缓存数据"/>
+</PreferenceScreen>

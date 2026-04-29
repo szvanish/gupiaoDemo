@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.stockanalyzer.app-mergeDebugResources-54:/values-h720dp-v13/values-h720dp-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\52759\\.gradle\\caches\\transforms-4\\0f4dc46a37ceb152eb6080c683dd65d4\\transformed\\appcompat-1.6.1\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "66",
+                        "endOffsets": "117"
+                    }
+                }
+            ]
+        }
+    ]
+}

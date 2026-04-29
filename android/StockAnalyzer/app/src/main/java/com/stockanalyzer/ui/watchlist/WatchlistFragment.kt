@@ -46,7 +46,8 @@ class WatchlistFragment : Fragment(R.layout.fragment_watchlist) {
 
         viewModel.watchlist.observe(viewLifecycleOwner) { list ->
             adapter.submitList(list)
-            binding.tvEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+            binding.layoutEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+            binding.recyclerView.visibility = if (list.isEmpty()) View.GONE else View.VISIBLE
         }
     }
 

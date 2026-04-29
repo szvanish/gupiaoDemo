@@ -1,94 +1,315 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:background="@color/background">
 
-    <LinearLayout
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:layout_height="56dp"
+        android:background="@color/primary"
+        app:titleTextColor="@color/white"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="@color/white"/>
 
-        <!-- 行情头部 -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal" android:gravity="center_vertical">
-            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:orientation="vertical">
-                <TextView android:id="@+id/tvStockName" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"/>
-                <TextView android:id="@+id/tvStockCode" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:textColor="@color/grey_text" android:textSize="13sp"/>
-            </LinearLayout>
-            <Button android:id="@+id/btnWatchlist" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="+ 自选"/>
-        </LinearLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView android:id="@+id/tvPrice" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:textSize="36sp" android:textStyle="bold"
-            android:layout_marginTop="8dp" android:text="--"/>
-        <TextView android:id="@+id/tvChange" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:textSize="16sp" android:text="--"/>
-
-        <!-- 成交量/额 -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal" android:layout_marginTop="8dp">
-            <TextView android:id="@+id/tvVolume" android:layout_width="0dp"
-                android:layout_height="wrap_content" android:layout_weight="1" android:textSize="13sp"/>
-            <TextView android:id="@+id/tvAmount" android:layout_width="0dp"
-                android:layout_height="wrap_content" android:layout_weight="1" android:textSize="13sp"/>
-        </LinearLayout>
-
-        <!-- K线周期切换 -->
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabPeriod"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"/>
+            android:orientation="vertical">
 
-        <!-- K线图 -->
-        <com.github.mikephil.charting.charts.CandleStickChart
-            android:id="@+id/candleChart"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_marginTop="8dp"/>
+            <!-- 价格 Header Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="20dp"
+                android:orientation="vertical">
 
-        <!-- 六维雷达图 -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="综合评分" android:textSize="16sp" android:textStyle="bold"
-            android:layout_marginTop="24dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-        <com.github.mikephil.charting.charts.RadarChart
-            android:id="@+id/radarChart"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-        <!-- AI 研报 -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="AI 分析研报" android:textSize="16sp" android:textStyle="bold"
-            android:layout_marginTop="24dp"/>
+                        <TextView
+                            android:id="@+id/tvStockName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold"/>
 
-        <ProgressBar android:id="@+id/progressReport"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+                        <TextView
+                            android:id="@+id/tvStockCode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#AADDFF"
+                            android:textSize="13sp"
+                            android:layout_marginTop="2dp"/>
+                    </LinearLayout>
 
-        <TextView android:id="@+id/tvRating" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:textSize="18sp" android:textStyle="bold"
-            android:padding="12dp" android:gravity="center" android:layout_marginTop="8dp"/>
+                    <Button
+                        android:id="@+id/btnWatchlist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="+ 自选"
+                        android:textSize="13sp"
+                        android:textColor="@color/primary"
+                        android:background="@color/white"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="14dp"/>
+                </LinearLayout>
 
-        <TextView android:id="@+id/tvSummary" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:textSize="15sp" android:padding="8dp"/>
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:text="--"/>
 
-        <TextView android:id="@+id/tvReportDetail" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:textSize="14sp" android:padding="8dp"
-            android:lineSpacingExtra="4dp"/>
+                <TextView
+                    android:id="@+id/tvChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="16sp"
+                    android:layout_marginTop="4dp"
+                    android:text="--"/>
 
-        <TextView android:id="@+id/tvRisks" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:textColor="@color/red_up"
-            android:textSize="14sp" android:padding="8dp"/>
+                <!-- 成交量/额 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
 
-        <TextView android:id="@+id/tvRecommendation" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:textSize="14sp"
-            android:padding="8dp" android:layout_marginBottom="24dp"/>
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="成交量"
+                            android:textColor="#99FFFFFF"
+                            android:textSize="11sp"/>
+                        <TextView
+                            android:id="@+id/tvVolume"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#DDFFFFFF"
+                            android:textSize="13sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="成交额"
+                            android:textColor="#99FFFFFF"
+                            android:textSize="11sp"/>
+                        <TextView
+                            android:id="@+id/tvAmount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#DDFFFFFF"
+                            android:textSize="13sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- K线 Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabPeriod"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        app:tabTextColor="@color/text_secondary"
+                        app:tabSelectedTextColor="@color/primary"
+                        app:tabIndicatorColor="@color/primary"
+                        app:tabIndicatorHeight="2dp"
+                        app:tabBackground="@null"/>
+
+                    <com.github.mikephil.charting.charts.CandleStickChart
+                        android:id="@+id/candleChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 雷达图 Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="六维综合评分"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.github.mikephil.charting.charts.RadarChart
+                        android:id="@+id/radarChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- AI 研报 Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="AI 分析研报"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                        <ProgressBar
+                            android:id="@+id/progressReport"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+
+                    <!-- 评级 badge -->
+                    <TextView
+                        android:id="@+id/tvRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:background="@drawable/rating_bg"
+                        android:layout_marginBottom="12dp"/>
+
+                    <TextView
+                        android:id="@+id/tvSummary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:lineSpacingExtra="4dp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvReportDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="4dp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvRisks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/red_up"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="4dp"
+                        android:background="@color/red_up_light"
+                        android:padding="10dp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvRecommendation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="4dp"
+                        android:background="@color/primary_light"
+                        android:padding="10dp"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -32,6 +32,11 @@ class StockDetailActivity : AppCompatActivity() {
         name = intent.getStringExtra("name") ?: code
         market = intent.getStringExtra("market") ?: "A"
 
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
+        binding.toolbar.setNavigationOnClickListener { finish() }
+
         binding.tvStockName.text = name
         binding.tvStockCode.text = "$code · ${market}股"
 

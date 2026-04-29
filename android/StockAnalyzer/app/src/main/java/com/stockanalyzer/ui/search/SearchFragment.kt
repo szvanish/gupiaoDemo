@@ -56,7 +56,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         viewModel.results.observe(viewLifecycleOwner) { results ->
             adapter.submitList(results)
-            binding.tvEmpty.visibility = if (results.isEmpty()) View.VISIBLE else View.GONE
+            binding.layoutEmpty.visibility = if (results.isEmpty()) View.VISIBLE else View.GONE
+            binding.recyclerView.visibility = if (results.isEmpty()) View.GONE else View.VISIBLE
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
