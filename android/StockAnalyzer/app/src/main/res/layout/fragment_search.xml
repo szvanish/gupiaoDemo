@@ -49,7 +49,7 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="8dp"
                 android:hint="输入股票名称或代码"
-                android:hintTextColor="#AAAAAA"
+                android:textColorHint="#AAAAAA"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:inputType="text"
