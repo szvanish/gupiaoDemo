@@ -130,14 +130,18 @@ New-Item -ItemType Directory -Path "C:\apps" -Force | Out-Null
 if (Test-Path "$DEPLOY_DIR\.git") {
     Write-Warn "Repository exists. Running git pull..."
     Set-Location $DEPLOY_DIR
-    & git pull origin master 2>&1 | Write-Host
+    $ErrorActionPreference = "Continue"
+    & git pull origin master
+    $ErrorActionPreference = "Stop"
 } else {
     if (Test-Path $DEPLOY_DIR) {
         Write-Warn "Directory exists but is not a git repo. Removing and re-cloning..."
         Remove-Item $DEPLOY_DIR -Recurse -Force
     }
     Write-Warn "Cloning repository..."
-    & git clone $REPO_URL $DEPLOY_DIR 2>&1 | Write-Host
+    $ErrorActionPreference = "Continue"
+    & git clone $REPO_URL $DEPLOY_DIR
+    $ErrorActionPreference = "Stop"
 }
 
 if (-not (Test-Path "$BACKEND_DIR\main.py")) {
