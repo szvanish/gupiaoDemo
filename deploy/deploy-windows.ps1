@@ -140,7 +140,7 @@ if (Test-Path "$DEPLOY_DIR\.git") {
     }
     Write-Warn "Cloning repository..."
     $ErrorActionPreference = "Continue"
-    & git clone $REPO_URL $DEPLOY_DIR
+    & git clone -b master $REPO_URL $DEPLOY_DIR
     $ErrorActionPreference = "Stop"
 }
 
