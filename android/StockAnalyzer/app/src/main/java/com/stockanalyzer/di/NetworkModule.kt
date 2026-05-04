@@ -18,7 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-private const val DEFAULT_BASE_URL = "http://172.17.6.46:8000"
+private const val DEFAULT_BASE_URL = "http://8.136.186.44:8000"
 
 /**
  * Interceptor that rewrites the request host/port to whatever is currently
