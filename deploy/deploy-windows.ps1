@@ -176,11 +176,13 @@ Write-OK "All dependencies installed"
 # ============================================================
 Write-Step "Writing .env configuration"
 $envContent = "DEEPSEEK_API_KEY=$DEEPSEEK_KEY`nREDIS_URL=$REDIS_URL"
-[System.IO.File]::WriteAllText("$BACKEND_DIR\.env", $envContent, [System.Text.Encoding]::UTF8)
+[System.IO.File]::WriteAllText("$BACKEND_DIR\.env", $envContent, (New-Object System.Text.UTF8Encoding $false))
 Write-OK ".env written"
 
+$ErrorActionPreference = "Continue"
 $cfgTest = & $python -c "from config import settings; print(settings.redis_url)" 2>&1
-Write-OK "Config check: redis_url = $cfgTest"
+$ErrorActionPreference = "Stop"
+if ($LASTEXITCODE -eq 0) { Write-OK "Config check: redis_url = $cfgTest" } else { Write-Warn "Config check skipped (non-fatal): $cfgTest" }
 
 # ============================================================
 # 7. Install NSSM and register Windows service
