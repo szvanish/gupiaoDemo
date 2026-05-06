@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stockanalyzer.R
 import com.stockanalyzer.databinding.FragmentWatchlistBinding
@@ -44,10 +45,19 @@ class WatchlistFragment : Fragment(R.layout.fragment_watchlist) {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
+        binding.tvAddStock.setOnClickListener {
+            findNavController().navigate(R.id.searchFragment)
+        }
+
         viewModel.watchlist.observe(viewLifecycleOwner) { list ->
             adapter.submitList(list)
             binding.layoutEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (list.isEmpty()) View.GONE else View.VISIBLE
+            viewModel.refreshQuotes(list)
+        }
+
+        viewModel.quotes.observe(viewLifecycleOwner) { quotes ->
+            adapter.updateQuotes(quotes)
         }
     }
 

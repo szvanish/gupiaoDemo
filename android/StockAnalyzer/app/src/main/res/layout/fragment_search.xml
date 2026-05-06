@@ -6,12 +6,12 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- 顶部蓝色 Header -->
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/primary"
+        android:background="@color/surface"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
@@ -20,27 +20,27 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="股票搜索"
-            android:textColor="@color/white"
+            android:text="搜索股票"
+            android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="12dp"/>
 
-        <!-- 搜索框 -->
+        <!-- Search bar -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="44dp"
             android:orientation="horizontal"
             android:background="@drawable/search_bar_bg"
             android:gravity="center_vertical"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp">
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:src="@android:drawable/ic_menu_search"
-                android:tint="#888888"/>
+                android:tint="@color/icon_tint"/>
 
             <EditText
                 android:id="@+id/etSearch"
@@ -48,8 +48,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginLeft="8dp"
-                android:hint="输入股票名称或代码"
-                android:textColorHint="#AAAAAA"
+                android:hint="股票名称或代码"
+                android:textColorHint="@color/text_hint"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:inputType="text"
@@ -58,15 +58,15 @@
                 android:singleLine="true"/>
         </LinearLayout>
 
-        <!-- 市场 Tab -->
+        <!-- Market tabs -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabMarket"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            app:tabTextColor="#AADDFF"
-            app:tabSelectedTextColor="@color/white"
-            app:tabIndicatorColor="@color/white"
+            android:layout_marginTop="8dp"
+            app:tabTextColor="@color/text_hint"
+            app:tabSelectedTextColor="@color/primary"
+            app:tabIndicatorColor="@color/primary"
             app:tabIndicatorHeight="2dp"
             app:tabBackground="@null"
             app:tabPaddingStart="0dp"
@@ -77,20 +77,21 @@
     <!-- Loading -->
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:visibility="gone"/>
 
-    <!-- 空状态 -->
+    <!-- Empty state -->
     <LinearLayout
         android:id="@+id/layoutEmpty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="48dp"
+        android:paddingTop="60dp"
+        android:paddingBottom="60dp"
         android:visibility="visible">
 
         <TextView
@@ -104,18 +105,20 @@
             android:id="@+id/tvEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="输入股票名称或代码搜索"
+            android:text="输入名称或代码搜索"
             android:textColor="@color/text_secondary"
             android:textSize="15sp"/>
     </LinearLayout>
 
-    <!-- 结果列表 -->
+    <!-- Results -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="8dp"
+        android:background="@color/background"
+        android:paddingTop="4dp"
         android:paddingBottom="8dp"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:visibility="gone"/>
 
 </LinearLayout>

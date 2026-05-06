@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
+        android:background="@color/surface"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
@@ -21,25 +21,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="我的自选"
-            android:textColor="@color/white"
+            android:text="自选股"
+            android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/tvAddStock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="去搜索 ›"
-            android:textColor="#AADDFF"
-            android:textSize="14sp"/>
+            android:text="+ 添加"
+            android:textColor="@color/primary"
+            android:textSize="14sp"
+            android:padding="4dp"/>
     </LinearLayout>
 
-    <!-- 表头 -->
+    <!-- Column header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:background="@color/surface"
-        android:paddingLeft="16dp"
+        android:background="@color/surface_variant"
+        android:paddingLeft="36dp"
         android:paddingRight="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -48,33 +50,29 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="名称/代码"
+            android:text="名称"
             android:textColor="@color/text_secondary"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:text="最新价"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"/>
+            android:textSize="11sp"/>
 
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:gravity="end"
+            android:text="最新价"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="涨跌幅"
             android:textColor="@color/text_secondary"
-            android:textSize="12sp"/>
+            android:textSize="11sp"/>
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider"/>
-
-    <!-- 空状态 -->
+    <!-- Empty state -->
     <LinearLayout
         android:id="@+id/layoutEmpty"
         android:layout_width="match_parent"
@@ -88,22 +86,31 @@
             android:layout_height="wrap_content"
             android:text="📋"
             android:textSize="48sp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="12dp"/>
 
         <TextView
             android:id="@+id/tvEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="暂无自选股，去搜索添加"
-            android:textColor="@color/text_secondary"
-            android:textSize="15sp"/>
+            android:text="暂无自选股"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="去搜索页添加关注的股票"
+            android:textColor="@color/text_hint"
+            android:textSize="13sp"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="8dp"/>
+        android:background="@color/background"
+        android:clipToPadding="false"/>
 
 </LinearLayout>

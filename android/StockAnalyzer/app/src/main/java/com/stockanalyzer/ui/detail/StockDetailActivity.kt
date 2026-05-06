@@ -79,7 +79,7 @@ class StockDetailActivity : AppCompatActivity() {
         binding.tvPrice.text = "%.2f".format(q.price)
         val sign = if (q.changePct >= 0) "+" else ""
         binding.tvChange.text = "$sign${"%.2f".format(q.change)}  $sign${"%.2f".format(q.changePct)}%"
-        val color = if (q.changePct >= 0) 0xFFE53935.toInt() else 0xFF43A047.toInt()
+        val color = if (q.changePct >= 0) 0xFFEF5350.toInt() else 0xFF26A69A.toInt()
         binding.tvPrice.setTextColor(color)
         binding.tvChange.setTextColor(color)
         binding.tvVolume.text = "成交量: ${"%.0f".format(q.volume / 10000)}万"
@@ -93,17 +93,28 @@ class StockDetailActivity : AppCompatActivity() {
                 bar.open.toFloat(), bar.close.toFloat())
         }
         val dataset = CandleDataSet(entries, "").apply {
-            increasingColor = 0xFFE53935.toInt()
+            increasingColor = 0xFFEF5350.toInt()
             increasingPaintStyle = android.graphics.Paint.Style.FILL
-            decreasingColor = 0xFF43A047.toInt()
-            shadowColor = 0xFF888888.toInt()
+            decreasingColor = 0xFF26A69A.toInt()
+            shadowColor = 0xFF64748B.toInt()
             setDrawValues(false)
         }
         binding.candleChart.apply {
             data = CandleData(dataset)
             description.isEnabled = false
             legend.isEnabled = false
-            xAxis.setDrawLabels(false)
+            setBackgroundColor(0xFF1E293B.toInt())
+            xAxis.apply {
+                setDrawLabels(false)
+                setDrawGridLines(false)
+                axisLineColor = 0xFF334155.toInt()
+            }
+            axisLeft.apply {
+                textColor = 0xFF94A3B8.toInt()
+                gridColor = 0xFF334155.toInt()
+                axisLineColor = 0xFF334155.toInt()
+            }
+            axisRight.isEnabled = false
             invalidate()
         }
     }
@@ -119,33 +130,54 @@ class StockDetailActivity : AppCompatActivity() {
         )
         val entries = scores.map { RadarEntry(it.toFloat()) }
         val dataset = RadarDataSet(entries, "综合评分").apply {
-            color = 0xFF1565C0.toInt()
-            fillColor = 0x441565C0.toInt()
+            color = 0xFFF59E0B.toInt()
+            fillColor = 0x44F59E0B.toInt()
             setDrawFilled(true)
             lineWidth = 2f
         }
         val radarLabels = listOf("技术", "基本", "估值", "情绪", "筹码", "宏观")
         binding.radarChart.apply {
             data = RadarData(dataset)
-            xAxis.valueFormatter = object : ValueFormatter() {
-                override fun getFormattedValue(value: Float) =
-                    radarLabels.getOrElse(value.toInt()) { "" }
+            setBackgroundColor(0xFF1E293B.toInt())
+            webColor = 0xFF334155.toInt()
+            webColorInner = 0xFF334155.toInt()
+            xAxis.apply {
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float) =
+                        radarLabels.getOrElse(value.toInt()) { "" }
+                }
+                textColor = 0xFFF1F5F9.toInt()
+                textSize = 12f
             }
-            yAxis.axisMinimum = 0f
-            yAxis.axisMaximum = 100f
+            yAxis.apply {
+                axisMinimum = 0f
+                axisMaximum = 100f
+                setDrawLabels(false)
+                gridColor = 0xFF334155.toInt()
+            }
+            legend.textColor = 0xFFF1F5F9.toInt()
             description.isEnabled = false
             invalidate()
         }
     }
 
     private fun renderReport(r: AIReport) {
-        val ratingColor = when (r.rating) {
-            "强烈买入", "买入" -> 0xFFE53935.toInt()
-            "强烈卖出", "卖出" -> 0xFF43A047.toInt()
-            else -> 0xFF1565C0.toInt()
+        val ratingBgColor = when (r.rating) {
+            "强烈买入", "买入" -> 0xFFEF5350.toInt()
+            "强烈卖出", "卖出" -> 0xFF26A69A.toInt()
+            else -> 0xFFF59E0B.toInt()
         }
         binding.tvRating.text = "【${r.rating}】"
-        binding.tvRating.setTextColor(ratingColor)
+        binding.tvRating.setTextColor(0xFF0F172A.toInt())
+        (binding.tvRating.background as? android.graphics.drawable.GradientDrawable)
+            ?.setColor(ratingBgColor)
+            ?: run {
+                val bg = android.graphics.drawable.GradientDrawable().apply {
+                    setColor(ratingBgColor)
+                    cornerRadius = 8f * resources.displayMetrics.density
+                }
+                binding.tvRating.background = bg
+            }
         r.targetPriceLow?.let { low ->
             r.targetPriceHigh?.let { high ->
                 binding.tvRating.append("  目标价: ${"%.2f".format(low)}-${"%.2f".format(high)}")

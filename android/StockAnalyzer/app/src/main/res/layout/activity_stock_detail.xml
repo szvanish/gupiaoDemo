@@ -12,10 +12,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/primary"
-        app:titleTextColor="@color/white"
+        android:background="@color/surface"
+        app:titleTextColor="@color/text_primary"
         app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="@color/white"/>
+        app:navigationIconTint="@color/text_primary"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/primary"
+                android:background="@color/surface"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="12dp"
@@ -53,7 +53,7 @@
                             android:id="@+id/tvStockName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="22sp"
                             android:textStyle="bold"/>
 
@@ -61,19 +61,20 @@
                             android:id="@+id/tvStockCode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="#AADDFF"
+                            android:textColor="@color/primary"
                             android:textSize="13sp"
                             android:layout_marginTop="2dp"/>
                     </LinearLayout>
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnWatchlist"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:text="+ 自选"
                         android:textSize="13sp"
                         android:textColor="@color/primary"
-                        android:background="@color/white"
+                        app:strokeColor="@color/primary"
                         android:paddingLeft="14dp"
                         android:paddingRight="14dp"/>
                 </LinearLayout>
@@ -82,7 +83,7 @@
                     android:id="@+id/tvPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="40sp"
                     android:textStyle="bold"
                     android:layout_marginTop="12dp"
@@ -92,7 +93,7 @@
                     android:id="@+id/tvChange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#CCFFFFFF"
+                    android:textColor="@color/text_secondary"
                     android:textSize="16sp"
                     android:layout_marginTop="4dp"
                     android:text="--"/>
@@ -113,13 +114,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="成交量"
-                            android:textColor="#99FFFFFF"
+                            android:textColor="@color/text_hint"
                             android:textSize="11sp"/>
                         <TextView
                             android:id="@+id/tvVolume"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="#DDFFFFFF"
+                            android:textColor="@color/text_secondary"
                             android:textSize="13sp"/>
                     </LinearLayout>
 
@@ -132,17 +133,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="成交额"
-                            android:textColor="#99FFFFFF"
+                            android:textColor="@color/text_hint"
                             android:textSize="11sp"/>
                         <TextView
                             android:id="@+id/tvAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="#DDFFFFFF"
+                            android:textColor="@color/text_secondary"
                             android:textSize="13sp"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <!-- 分隔线 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"/>
 
             <!-- K线 Card -->
             <androidx.cardview.widget.CardView
@@ -150,7 +157,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -166,7 +174,8 @@
                         app:tabSelectedTextColor="@color/primary"
                         app:tabIndicatorColor="@color/primary"
                         app:tabIndicatorHeight="2dp"
-                        app:tabBackground="@null"/>
+                        app:tabBackground="@null"
+                        android:background="@null"/>
 
                     <com.github.mikephil.charting.charts.CandleStickChart
                         android:id="@+id/candleChart"
@@ -184,7 +193,8 @@
                 android:layout_marginRight="12dp"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -209,14 +219,13 @@
             </androidx.cardview.widget.CardView>
 
             <!-- AI 研报 Card -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
+                style="@style/CardStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:layout_marginBottom="24dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -254,6 +263,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
                         android:textStyle="bold"
+                        android:textColor="@color/background"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:paddingTop="6dp"
@@ -300,14 +310,14 @@
                         android:id="@+id/tvRecommendation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/primary"
                         android:textSize="14sp"
                         android:lineSpacingExtra="4dp"
                         android:background="@color/primary_light"
                         android:padding="10dp"/>
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -25,7 +25,14 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         _binding = FragmentNewsBinding.bind(view)
 
         adapter = NewsAdapter { item ->
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.url)))
+            val intent = Intent(requireContext(), NewsDetailActivity::class.java).apply {
+                putExtra(NewsDetailActivity.EXTRA_TITLE,   item.title)
+                putExtra(NewsDetailActivity.EXTRA_SOURCE,  item.source)
+                putExtra(NewsDetailActivity.EXTRA_TIME,    formatTime(item.publishedAt))
+                putExtra(NewsDetailActivity.EXTRA_CONTENT, item.summary ?: "")
+                putExtra(NewsDetailActivity.EXTRA_URL,     item.url)
+            }
+            startActivity(intent)
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
@@ -47,6 +54,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         viewModel.isLoading.observe(viewLifecycleOwner) { binding.swipeRefresh.isRefreshing = it }
 
         viewModel.loadHotNews()
+    }
+
+    private fun formatTime(raw: String): String {
+        if (raw.length == 8 && raw.all { it.isDigit() }) {
+            return "${raw.substring(0, 4)}-${raw.substring(4, 6)}-${raw.substring(6, 8)}"
+        }
+        return raw.take(16)
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }

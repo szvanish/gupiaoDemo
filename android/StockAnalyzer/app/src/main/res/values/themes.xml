@@ -4,16 +4,38 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/primary</item>
-        <item name="android:statusBarColor">@color/primary_dark</item>
-        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowLightNavigationBar">false</item>
         <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="CardStyle" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">12dp</item>
-        <item name="cardElevation">2dp</item>
+        <item name="cardElevation">0dp</item>
         <item name="cardBackgroundColor">@color/surface</item>
+        <item name="strokeColor">@color/card_border</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="SectionHeaderText">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="SettingItemTitle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="SettingItemSummary">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 </resources>

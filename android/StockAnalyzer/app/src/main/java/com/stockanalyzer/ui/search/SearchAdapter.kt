@@ -16,15 +16,11 @@ class SearchAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: StockSearchResult) {
             binding.tvName.text = item.name
-            binding.tvCode.text = "${item.code}  ${item.market}股"
-            binding.tvPrice.text = item.price?.let { "%.2f".format(it) } ?: "--"
-            val pct = item.changePct
-            if (pct != null) {
-                val sign = if (pct >= 0) "+" else ""
-                binding.tvChangePct.text = "$sign${"%.2f".format(pct)}%"
-                binding.tvChangePct.setTextColor(if (pct >= 0) 0xFFE53935.toInt() else 0xFF43A047.toInt())
-            } else {
-                binding.tvChangePct.text = "--"
+            binding.tvCode.text = item.code
+            binding.tvMarket.text = when (item.market) {
+                "HK" -> "港股"
+                "US" -> "美股"
+                else -> "A股"
             }
             binding.root.setOnClickListener { onClick(item) }
         }

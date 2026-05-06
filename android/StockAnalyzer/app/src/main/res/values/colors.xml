@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="red_up">#D32F2F</color>
-    <color name="green_down">#2E7D32</color>
-    <color name="red_up_light">#FFEBEE</color>
-    <color name="green_down_light">#E8F5E9</color>
-    <color name="primary">#1565C0</color>
-    <color name="primary_dark">#003c8f</color>
-    <color name="primary_light">#E3F2FD</color>
-    <color name="white">#FFFFFF</color>
-    <color name="grey_text">#757575</color>
-    <color name="grey_light">#F5F5F5</color>
-    <color name="background">#F0F2F5</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="text_primary">#1A1A2E</color>
-    <color name="text_secondary">#6B7280</color>
-    <color name="divider">#E0E0E0</color>
-    <color name="card_shadow">#1A000000</color>
+    <!-- Brand – Amber/Gold -->
+    <color name="primary">#F59E0B</color>
+    <color name="primary_dark">#D97706</color>
+    <color name="primary_light">#2C1A00</color>
+    <color name="primary_container">#1A1100</color>
+
+    <!-- Accent – Purple tech -->
+    <color name="accent">#8B5CF6</color>
+
+    <!-- Market semantics (Chinese: red=up, green=down) -->
+    <color name="red_up">#EF5350</color>
+    <color name="green_down">#26A69A</color>
+    <color name="red_up_light">#2D1515</color>
+    <color name="green_down_light">#0D201F</color>
+
+    <!-- Surface – OLED dark -->
+    <color name="white">#F1F5F9</color>
+    <color name="background">#0F172A</color>
+    <color name="surface">#1E293B</color>
+    <color name="surface_variant">#263348</color>
+
+    <!-- Text -->
+    <color name="text_primary">#F1F5F9</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_hint">#475569</color>
+
+    <!-- UI chrome -->
+    <color name="divider">#334155</color>
+    <color name="card_border">#334155</color>
+    <color name="icon_tint">#64748B</color>
+    <color name="grey_text">#94A3B8</color>
+    <color name="grey_light">#1E293B</color>
+    <color name="card_shadow">#66000000</color>
 </resources>

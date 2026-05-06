@@ -41,7 +41,7 @@ class NewsService:
                             source="央视财经",
                             published_at=str(row.get("date", date_str)),
                             url="",
-                            summary=content[:200] if content else None,
+                            summary=content if content else None,
                         ))
                     return items
             except Exception:

@@ -16,5 +16,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.detail.StockDetailActivity"/>
+        <activity android:name=".ui.news.NewsDetailActivity"/>
     </application>
 </manifest>

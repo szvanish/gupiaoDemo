@@ -1,6 +1,7 @@
 package com.stockanalyzer.ui.news
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,8 +16,21 @@ class NewsAdapter(private val onClick: (NewsItem) -> Unit) :
         fun bind(item: NewsItem) {
             binding.tvTitle.text = item.title
             binding.tvSource.text = item.source
-            binding.tvTime.text = item.publishedAt.take(16)
+            binding.tvTime.text = formatTime(item.publishedAt)
+            if (!item.summary.isNullOrEmpty()) {
+                binding.tvSummary.text = item.summary
+                binding.tvSummary.visibility = View.VISIBLE
+            } else {
+                binding.tvSummary.visibility = View.GONE
+            }
             binding.root.setOnClickListener { onClick(item) }
+        }
+
+        private fun formatTime(raw: String): String {
+            if (raw.length == 8 && raw.all { it.isDigit() }) {
+                return "${raw.substring(0, 4)}-${raw.substring(4, 6)}-${raw.substring(6, 8)}"
+            }
+            return raw.take(16)
         }
     }
 

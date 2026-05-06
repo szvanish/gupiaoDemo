@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Request, Query
+import asyncio
 import pandas as pd
 from config import settings
 from services.cache import CacheService
@@ -43,7 +44,7 @@ async def get_quote(code: str, market: str, request: Request):
         return cached
     svc = _get_service(market)
     try:
-        quote = svc.get_quote(code)
+        quote = await asyncio.to_thread(svc.get_quote, code)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     data = quote.model_dump()
@@ -57,10 +58,13 @@ async def get_kline(code: str, market: str, request: Request, period: str = "day
     if cached:
         return cached
     svc = _get_service(market)
-    bars = svc.get_kline(code, period)
+    bars = await asyncio.to_thread(svc.get_kline, code, period)
     data = [b.model_dump() for b in bars]
-    await set_cache(request, cache_key, data, settings.cache_ttl_quote)
+    await set_cache(request, cache_key, data, settings.cache_ttl_kline)
     return data
+
+async def _noop(default):
+    return default
 
 @router.get("/{code}/analysis")
 async def get_analysis(code: str, market: str, request: Request):
@@ -70,14 +74,16 @@ async def get_analysis(code: str, market: str, request: Request):
         return cached
     svc = _get_service(market)
     try:
-        quote = svc.get_quote(code)
-        bars = svc.get_kline(code, period="day")
+        quote, bars, fundamental, sentiment = await asyncio.gather(
+            asyncio.to_thread(svc.get_quote, code),
+            asyncio.to_thread(svc.get_kline, code, "day"),
+            asyncio.to_thread(svc.get_fundamental, code) if hasattr(svc, "get_fundamental") else _noop(FundamentalData()),
+            asyncio.to_thread(svc.get_sentiment, code) if hasattr(svc, "get_sentiment") else _noop(SentimentData()),
+        )
         df = pd.DataFrame([b.model_dump() for b in bars])
         technical = calculate_indicators(df)
-        fundamental = svc.get_fundamental(code) if hasattr(svc, "get_fundamental") else FundamentalData()
         fundamental.score = score_fundamental(fundamental)
         valuation = compute_valuation(fundamental, industry_avg_pe=None, industry_avg_pb=None)
-        sentiment = svc.get_sentiment(code) if hasattr(svc, "get_sentiment") else SentimentData()
         analysis = StockAnalysis(
             code=code, name=quote.name, market=market,
             technical=technical, fundamental=fundamental,
@@ -87,7 +93,7 @@ async def get_analysis(code: str, market: str, request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     data = analysis.model_dump()
-    await set_cache(request, cache_key, data, settings.cache_ttl_quote)
+    await set_cache(request, cache_key, data, settings.cache_ttl_kline)
     return data
 
 @router.get("/{code}/report")
